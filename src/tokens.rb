@@ -13,13 +13,13 @@ class DotTok < Token
     end
 end
 
-class LeftParen < Token
+class LParenTok < Token
     def inspect
         "Tok[(]"
     end
 end
 
-class RightParen < Token
+class RParenTok < Token
     def inspect
         "Tok[)]"
     end

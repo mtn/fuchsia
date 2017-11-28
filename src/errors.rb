@@ -1,0 +1,2 @@
+
+class MalformedIdentifier < RuntimeError; end
