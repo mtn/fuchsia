@@ -17,7 +17,7 @@ class Parser
 
     def consume(tok)
         if matchType(tok)
-            ret = tok
+            ret = @tokens[@ind]
             advance
             return ret
         end
@@ -26,10 +26,13 @@ class Parser
 
     def parseTerm
         if consume(LambdaTok.new)
-            id = consume(IdentifierTok.new(@tokens[@ind].name))
-            raise ParseError if id.nil?
+            idtok = consume(IdentifierTok.new(@tokens[@ind].name))
+            raise ParseError if idtok.nil?
+            id = Identifier.new(idtok.name)
+
             consume(DotTok.new)
             term = parseTerm
+
             return Abstraction.new(id,term)
         else
             return parseApplication

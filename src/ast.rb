@@ -6,7 +6,7 @@ class Abstraction
     end
 
     def inspect
-        "λ#{@param}.#{@body}"
+        "λ#{@param.inspect}.#{@body.inspect}"
     end
 end
 
@@ -22,6 +22,7 @@ class Application
 end
 
 class Identifier
+    attr_reader :val
     def initialize(val)
         @val = val
     end
