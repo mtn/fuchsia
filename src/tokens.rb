@@ -1,5 +1,10 @@
 
-class Token; end
+class Token
+    def ==(other)
+        puts self.class
+        return false unless other.is_a? self.class
+    end
+end
 
 class LambdaTok < Token
     def inspect
@@ -38,6 +43,11 @@ class IdentifierTok < Token
 
     def inspect
         "Tok[id_#{@name}]"
+    end
+
+    def ==(other)
+        return false unless other.is_a? IdentifierTok
+        @name == other.name
     end
 end
 

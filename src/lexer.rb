@@ -32,6 +32,9 @@ class Lexer
         when 'λ' then
             advance
             return LambdaTok.new
+        when '\\' then
+            advance
+            return LambdaTok.new
         when '.' then
             advance
             return DotTok.new
@@ -89,5 +92,3 @@ def islower(s)
     !!s.match(/\p{Lower}/)
 end
 
-lexer = Lexer.new("λx. (y x)")
-p lexer.lex

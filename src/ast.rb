@@ -1,14 +1,4 @@
 
-class Application
-    def initialize(lhs,rhs)
-        @lhs = lhs
-        @rhs = rhs
-    end
-
-    def inspect
-    end
-end
-
 class Abstraction
     def initialize(param,body)
         @param = param
@@ -16,6 +6,18 @@ class Abstraction
     end
 
     def inspect
+        "λ#{@param}.#{@body}"
+    end
+end
+
+class Application
+    def initialize(lhs,rhs)
+        @lhs = lhs
+        @rhs = rhs
+    end
+
+    def inspect
+        "#{@lhs.inspect} #{@rhs.inspect}"
     end
 end
 
@@ -25,6 +27,7 @@ class Identifier
     end
 
     def inspect
+        "#{@val}"
     end
 end
 
