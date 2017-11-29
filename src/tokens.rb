@@ -37,6 +37,8 @@ class EOFTok < Token
 end
 
 class IdentifierTok < Token
+    attr_reader :name
+
     def initialize(name)
         @name = name
     end

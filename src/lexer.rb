@@ -76,6 +76,8 @@ class Lexer
             end
         end
 
+        toks.push(EOFTok.new)
+
         toks
     end
 end

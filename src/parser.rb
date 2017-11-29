@@ -1,4 +1,5 @@
 require_relative 'tokens'
+require_relative 'ast'
 
 class Parser
     def initialize(tokens)
@@ -23,23 +24,23 @@ class Parser
         nil
     end
 
-    def parseTerm(env)
+    def parseTerm
         if consume(LambdaTok.new)
-            id = consume(IdentifierTok.new)
+            id = consume(IdentifierTok.new(@tokens[@ind].name))
             raise ParseError if id.nil?
-
-            term = parseTerm(env.push(id))
+            consume(DotTok.new)
+            term = parseTerm
             return Abstraction.new(id,term)
         else
-            return parseApplication(env)
+            return parseApplication
         end
     end
 
-    def parseApplication(env)
-        lhs = parseAtom(env)
+    def parseApplication
+        lhs = parseAtom
 
         loop do
-            rhs = parseAtom(env)
+            rhs = parseAtom
             if rhs.nil?
                 return lhs
             else
@@ -48,16 +49,21 @@ class Parser
         end
     end
 
-    def parseAtom(env)
+    def parseAtom
         if consume(LParenTok.new)
-            term = parseTerm(env)
+            term = parseTerm
             raise ParseError unless consume(RParenTok.new)
             return term
+        elsif id = consume(IdentifierTok.new(''))
+            return Identifier.new(id.name)
+        else
+            return nil
         end
     end
 
     def parse
-
-        p @tokens
+        res = parseTerm
+        raise ParseError unless @tokens[@ind].is_a? EOFTok
+        return res
     end
 end
