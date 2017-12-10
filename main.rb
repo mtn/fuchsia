@@ -1,7 +1,5 @@
 require_relative 'src/parser'
 require_relative 'src/lexer'
+require_relative 'src/interpreter'
 
-tokens = Lexer.new("λx. (y x)").lex
-parser = Parser.new(tokens)
-# puts parser.parse.class
-p parser.parse
+interpreter = Interpreter.new
