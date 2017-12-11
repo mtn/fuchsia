@@ -32,7 +32,6 @@ class Parser
     end
 
     def parseApplication
-        # TODO don't require parenthesis around application
         consume(LParenTok)
 
         lexpr = parseExpression

@@ -7,12 +7,13 @@ module Interpreter
     def self.run(expr)
         tokens = Lexer.new(expr).lex
         ast = Parser.new(tokens).parse
-        puts "ast:"
-        p ast
-        return evaluate(ast)
-    end
 
-    def self.evaluate(ast)
+        while ast.inspect != ast.reduce.inspect
+            p ast.class
+            ast = ast.reduce
+        end
+
+        return ast
     end
 
 end

@@ -3,7 +3,15 @@
 
 class LexError < RuntimeError; end
 
-class MalformedIdentifier < RuntimeError; end
+class MalformedIdentifier < LexError
+    def initialize(tok)
+        @tok = tok
+    end
+
+    def message
+        "Malfored Identifier: #{@tok}. Identifiers must start with lowercase"
+    end
+end
 
 
 # Parser Errors

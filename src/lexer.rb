@@ -59,7 +59,7 @@ class Lexer
                     advance
                 end
             else
-                raise MalformedIdentifier #TODO better error
+                raise MalformedIdentifier.new(@input[@ind])
             end
         end
     end

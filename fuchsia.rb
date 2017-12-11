@@ -8,8 +8,11 @@ if ARGV.size > 0
     lines = contents.split("\n")
 
     for line in lines
+        puts "line"
         p line
+        puts "interpreted"
         p Interpreter.run(line)
+        puts "fin"
     end
 
     return
