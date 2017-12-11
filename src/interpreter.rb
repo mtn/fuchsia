@@ -8,10 +8,10 @@ module Interpreter
         tokens = Lexer.new(expr).lex
         ast = Parser.new(tokens).parse
 
-        # while ast.inspect != ast.reduce.inspect
-        #     p ast.class
-        #     ast = ast.reduce
-        # end
+        while ast.inspect != ast.reduce.inspect
+            p ast.class
+            ast = ast.reduce
+        end
 
         return ast
     end

@@ -41,22 +41,19 @@ The lexer/parser were hand-written according to the following grammar:
 
     <atom>        := [a-z][a-zA-Z]*
 
-Without left recursion:
+To get rid of left recursion:
 
-
-Without left recursion,
-
-    <expression>  := <atom>
-                   | <abstraction>
-                   | <application>
-                   | (<expression>)
+    <expression>  := <application>
+                   | ε
 
     <abstraction> := λ<atom>.<expr>
 
     <application> := <atom> <expression>
                    | <abstraction> <expression>
+                   | (<atom>) <expression>
+                   | (<abstraction>) <expression>
 
-    <atom>        := [a-z][a-zA-Z]*
+    <atom>          := [a-z][a-zA-Z]*
 
 
 Variable names can be arbitrarily long so long as they begin with a lowercase letter and otherwise only consist of alphabetic characters, so arbitrarily long expressions can be evaluated.

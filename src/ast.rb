@@ -17,7 +17,7 @@ class Abstraction
     end
 
     def inspect
-        "λ#{@param.inspect}.#{@body.inspect}"
+        "(λ#{@param.inspect}.#{@body.inspect})"
     end
 end
 
@@ -37,10 +37,13 @@ class Application
 
             return @lhs.body.reduce(new)
         end
-        return Application(@lhs.reduce(env),@rhs.reduce(env))
+        return Application.new(@lhs.reduce(env),@rhs.reduce(env))
     end
 
     def inspect
+        if @rhs.is_a? Epsilon
+            return "#{@lhs.inspect}"
+        end
         "#{@lhs.inspect} #{@rhs.inspect}"
     end
 end
@@ -66,12 +69,10 @@ end
 
 # Base case
 class Epsilon
-    def reduce
+    def reduce(env)
         self
     end
 
-    def inspect
-        "ε"
-    end
+    def inspect; end
 end
 
