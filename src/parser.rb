@@ -11,62 +11,54 @@ class Parser
         @ind += 1
     end
 
-    def matchType(tok)
-        @tokens[@ind].is_a? tok.class
+    def consume(type)
+        raise UnexpectedTokenType.new(@tokens[@ind].class, type) \
+            unless @tokens[@ind].is_a? type
+
+        advance
+        @tokens[@ind-1]
     end
 
-    def consume(tok)
-        if matchType(tok)
-            ret = @tokens[@ind]
-            advance
-            return ret
-        end
-        nil
-    end
-
-    def parseTerm
-        if consume(LambdaTok.new)
-            idtok = consume(IdentifierTok.new(@tokens[@ind].name))
-            raise ParseError if idtok.nil?
-            id = Identifier.new(idtok.name)
-
-            consume(DotTok.new)
-            term = parseTerm
-
-            return Abstraction.new(id,term)
-        else
+    def parseExpression
+        if @tokens[@ind].is_a? LParenTok
             return parseApplication
+        elsif @tokens[@ind].is_a? LambdaTok
+            return parseAbstraction
+        elsif @tokens[@ind].is_a? AtomTok
+            return parseAtom
+        else
+            raise UnexpectedToken.new(@tokens[@ind], ["'","\\", "λ", "aToM"])
         end
     end
 
     def parseApplication
-        lhs = parseAtom
+        # TODO don't require parenthesis around application
+        consume(LParenTok)
 
-        loop do
-            rhs = parseAtom
-            if rhs.nil?
-                return lhs
-            else
-                lhs = Application.new(lhs,rhs)
-            end
-        end
+        lexpr = parseExpression
+        rexpr = parseExpression
+
+        consume(RParenTok)
+
+        Application.new(lexpr, rexpr)
+    end
+
+    def parseAbstraction
+        consume(LambdaTok)
+        param = parseAtom
+        consume(DotTok)
+        Abstraction.new(param, parseExpression)
     end
 
     def parseAtom
-        if consume(LParenTok.new)
-            term = parseTerm
-            raise ParseError unless consume(RParenTok.new)
-            return term
-        elsif id = consume(IdentifierTok.new(''))
-            return Identifier.new(id.name)
-        else
-            return nil
-        end
+        Atom.new(consume(AtomTok).name)
     end
 
     def parse
-        res = parseTerm
-        raise ParseError unless @tokens[@ind].is_a? EOFTok
-        return res
+        res = parseExpression
+
+        consume(EOFTok)
+
+        res
     end
 end

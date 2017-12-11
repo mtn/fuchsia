@@ -1,6 +1,6 @@
 # fuchsia
 
-Fuchsia is an untyped lambda calculus interpreter. The core has no dependencies, though tests are implemented with RSpec.
+Fuchsia is an untyped lambda calculus interpreter. Expressions are evaluated according to normal order reduction. The core has no dependencies outside the standard library, though tests are implemented with RSpec.
 
 ## Usage
 
@@ -24,7 +24,7 @@ Then, run tests with:
 
     bundle exec rspec
 
-They include alpha-renaming, beta-reduction, and eta-reduction.
+They include alpha-renaming, beta-reduction, eta-reduction, and various combinations.
 
 ## Resources
 

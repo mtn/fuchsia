@@ -8,6 +8,7 @@ if ARGV.size > 0
     lines = contents.split("\n")
 
     for line in lines
+        p line
         p Interpreter.run(line)
     end
 
@@ -17,6 +18,8 @@ end
 while buf = Readline.readline('>> ', true)
     begin
         p Interpreter.run(buf)
+    rescue ParseError
+        puts "#{e.message}"
     rescue => e
         puts "Error: '#{e.message}'"
     end

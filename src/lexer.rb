@@ -52,7 +52,7 @@ class Lexer
                 name = ''
                 loop do
                     if @input[@ind].nil? or not isalpha(@input[@ind])
-                        return IdentifierTok.new(name)
+                        return AtomTok.new(name)
                     end
 
                     name += @input[@ind]

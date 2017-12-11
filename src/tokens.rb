@@ -36,7 +36,7 @@ class EOFTok < Token
     end
 end
 
-class IdentifierTok < Token
+class AtomTok < Token
     attr_reader :name
 
     def initialize(name)
@@ -48,7 +48,7 @@ class IdentifierTok < Token
     end
 
     def ==(other)
-        return false unless other.is_a? IdentifierTok
+        return false unless other.is_a? AtomTok
         @name == other.name
     end
 end

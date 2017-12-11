@@ -21,7 +21,7 @@ class Application
     end
 end
 
-class Identifier
+class Atom
     attr_reader :val
     def initialize(val)
         @val = val
