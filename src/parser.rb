@@ -19,25 +19,34 @@ class Parser
         @tokens[@ind-1]
     end
 
-    def parseExpression
-        if @tokens[@ind].is_a? LParenTok
+    def parseExpression(recursive=true)
+        if @tokens[@ind].is_a? EOFTok or @tokens[@ind].is_a? RParenTok
+            return Epsilon.new
+        end
+
+        if recursive
             return parseApplication
-        elsif @tokens[@ind].is_a? LambdaTok
-            return parseAbstraction
-        elsif @tokens[@ind].is_a? AtomTok
-            return parseAtom
-        else
-            raise UnexpectedToken.new(@tokens[@ind], ["'","\\", "λ", "aToM"])
         end
     end
 
-    def parseApplication
+    def parseParenthesizedExpression
         consume(LParenTok)
-
-        lexpr = parseExpression
-        rexpr = parseExpression
-
+        expr = parseExpression
         consume(RParenTok)
+
+        return expr
+    end
+
+    def parseApplication
+        if @tokens[@ind].is_a? AtomTok
+            lexpr = parseAtom
+        elsif @tokens[@ind].is_a? LambdaTok
+            return parseAbstraction
+        elsif @tokens[@ind].is_a? LParenTok
+            lexpr = parseParenthesizedExpression
+        end
+
+        rexpr = parseExpression
 
         Application.new(lexpr, rexpr)
     end
@@ -46,7 +55,9 @@ class Parser
         consume(LambdaTok)
         param = parseAtom
         consume(DotTok)
-        Abstraction.new(param, parseExpression)
+        abs = Abstraction.new(param, parseExpression)
+
+        return abs
     end
 
     def parseAtom

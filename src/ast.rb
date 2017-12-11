@@ -32,19 +32,9 @@ class Application
 
     def reduce(env={})
         if @lhs.is_a? Abstraction
-            p 'lhs was an abstraction'
-            puts 'lhs'
-            p lhs
-            puts 'rhs'
-            p rhs
             new = env.clone
             new[@lhs.param] = @rhs
-            puts "bodyclass"
-            p @lhs.body.class
-            puts "body"
-            p @lhs.body
-            puts "param"
-            p @lhs.param
+
             return @lhs.body.reduce(new)
         end
         return Application(@lhs.reduce(env),@rhs.reduce(env))
@@ -71,6 +61,17 @@ class Atom
 
     def inspect
         "#{@name}"
+    end
+end
+
+# Base case
+class Epsilon
+    def reduce
+        self
+    end
+
+    def inspect
+        "ε"
     end
 end
 
