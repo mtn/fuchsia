@@ -1,0 +1,8 @@
+(λx.x y)
+((λy.λx.(y x) λx.(x x)) y)
+λx.(y x)
+λx.((λx.(y x) λx.(z x)) x)
+(((λb.λt.λe.((b t) e) λx.λy.x) x) y)
+(λy.(λx.λy.(x y) y) (y w))
+(λx.λy.(y x) (y w))
+(λx.λy.(x y) (y w))
