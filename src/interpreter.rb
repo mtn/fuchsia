@@ -9,7 +9,6 @@ module Interpreter
         ast = Parser.new(tokens).parse
 
         while ast.inspect != ast.reduce.inspect
-            p ast.class
             ast = ast.reduce
         end
 

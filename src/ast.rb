@@ -10,8 +10,8 @@ class Abstraction
 
     def reduce(env={})
         new = env.clone
-        if new.include? @param
-            new.delete(@param)
+        if new.key? @param.name
+            new.delete(@param.name)
         end
         Abstraction.new(@param,@body.reduce(new))
     end
@@ -33,7 +33,7 @@ class Application
     def reduce(env={})
         if @lhs.is_a? Abstraction
             new = env.clone
-            new[@lhs.param] = @rhs
+            new[@lhs.param.name] = @rhs
 
             return @lhs.body.reduce(new)
         end
@@ -56,8 +56,8 @@ class Atom
     end
 
     def reduce(env={})
-        if env.include? @name
-            @name = env[@name]
+        if env.key? @name
+            return env[@name]
         end
         self
     end
