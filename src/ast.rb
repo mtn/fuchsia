@@ -15,12 +15,16 @@ class Abstraction
         end
 
         if @body.is_a? Application
-            if @body.rhs == @param
+            if @body.rhs == @param and not @body.lhs.freeIn(@param)
                 return @body.lhs.reduce(new)
             end
         end
 
         Abstraction.new(@param,@body.reduce(new))
+    end
+
+    def freeIn(atom)
+        atom != @param and @body.freeIn(atom)
     end
 
     def inspect
@@ -45,13 +49,16 @@ class Application
     def reduce(env={})
         if @lhs.is_a? Abstraction
             new = env.clone
-
             new[@lhs.param.name] = @rhs
 
             return @lhs.body.reduce(new)
         end
 
         Application.new(@lhs.reduce(env),@rhs.reduce(env))
+    end
+
+    def freeIn(atom)
+        @lhs.freeIn(atom) or @rhs.freeIn(atom)
     end
 
     def inspect
@@ -76,6 +83,10 @@ class Atom
             return env[@name]
         end
         self
+    end
+
+    def freeIn(atom)
+        atom == self
     end
 
     def inspect

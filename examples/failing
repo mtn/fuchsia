@@ -1,2 +1,1 @@
-(λp.λa.λb.p a b) (λa.λb. a) a b
-
+(\x.\x.(x x)) y w
