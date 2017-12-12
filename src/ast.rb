@@ -14,18 +14,18 @@ class Abstraction
             new.delete(@param.name)
         end
 
-        # puts "hi"
-        # if @body.is_a? Application
-        #     puts "in here"
-        #     puts "body"
-        #     p @body
-        #     puts "bodyfin"
-        #     p "bodyrhs #{@body.rhs}"
-        #     p "param #{@param}"
-        #     if @body.rhs == @param
-        #         return @body.lhs.reduce(new)
-        #     end
-        # end
+        puts "hi"
+        if @body.is_a? Application
+            puts "in here"
+            puts "body"
+            p @body
+            puts "bodyfin"
+            p "bodyrhs #{@body.rhs.inspect}"
+            p "param #{@param.inspect}"
+            if @body.rhs == @param
+                return @body.lhs.reduce(new)
+            end
+        end
 
         Abstraction.new(@param,@body.reduce(new))
     end
@@ -50,10 +50,6 @@ class Application
     end
 
     def reduce(env={})
-        if @rhs.is_a? Epsilon
-            return @lhs.reduce(env)
-        end
-
         if @lhs.is_a? Abstraction
             new = env.clone
 
@@ -68,9 +64,6 @@ class Application
     end
 
     def inspect
-        if @rhs.is_a? Epsilon
-            return "#{@lhs.inspect}"
-        end
         "(#{@lhs.inspect} #{@rhs.inspect})"
     end
 
