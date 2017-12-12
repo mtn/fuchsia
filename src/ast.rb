@@ -9,18 +9,20 @@ class Abstraction
     end
 
     def reduce(env={})
-        puts "reducing lambda"
-        p self
-        puts "lambdafin"
         new = env.clone
         if new.key? @param.name
             new.delete(@param.name)
         end
-        Abstraction.new(@param,@body.reduce(new))
+        return Abstraction.new(@param,@body.reduce(new))
     end
 
     def inspect
         "(λ#{@param.inspect}.#{@body.inspect})"
+    end
+
+    def ==(other)
+        return false if not other.is_a? Abstraction
+        @param == other.param and @body == other.body
     end
 end
 
@@ -34,18 +36,20 @@ class Application
     end
 
     def reduce(env={})
-        puts "reducing application"
-        p self
         if @lhs.is_a? Abstraction
-            puts "lhs was an abstraction"
             new = env.clone
-            new[@lhs.param.name] = @rhs
+
+            if not new.has_value? @lhs.param
+                new[@lhs.param.name] = @rhs
+            end
 
             return @lhs.body.reduce(new)
-        else
-            puts "lhs was not an abstraction"
-            p @lhs
         end
+
+        if @rhs.is_a? Epsilon
+            return @lhs.reduce(env)
+        end
+
         return Application.new(@lhs.reduce(env),@rhs.reduce(env))
     end
 
@@ -54,6 +58,15 @@ class Application
             return "#{@lhs.inspect}"
         end
         "(#{@lhs.inspect} #{@rhs.inspect})"
+    end
+
+    def ==(other)
+        if other.is_a? Atom
+            other = Application.new(other, Epsilon.new)
+        end
+
+        return false if not other.is_a? Application
+        @lhs == other.lhs and @rhs == other.rhs
     end
 end
 
@@ -74,6 +87,15 @@ class Atom
     def inspect
         "#{@name}"
     end
+
+    def ==(other)
+        if other.is_a? Application and other.rhs.is_a? Epsilon
+            other = other.lhs
+        end
+
+        return false if not other.is_a? Atom
+        @name == other.name
+    end
 end
 
 # Base case
@@ -84,6 +106,10 @@ class Epsilon
 
     def inspect
         "ε"
+    end
+
+    def ==(other)
+        other.is_a? Epsilon
     end
 end
 

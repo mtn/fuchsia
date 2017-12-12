@@ -10,15 +10,12 @@ module Interpreter
         tokens = Lexer.new(expr).lex
         ast = Parser.new(tokens).parse
 
-        puts "ast in step"
-        pp astToDict(ast)
-        # p ast
-        # p ast.class
-        # while ast.inspect != ast.reduce.inspect
-        #     puts "ast in step"
-        #     p ast
-        #     ast = ast.reduce
-        # end
+        loop do
+            new = ast.reduce
+
+            break if ast.inspect == new.inspect
+            ast = new
+        end
 
         return ast
     end
