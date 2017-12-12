@@ -11,6 +11,9 @@ module Interpreter
         ast = Parser.new(tokens).parse
 
         loop do
+            # puts "===================================="
+            # p ast
+            # pp astToDict(ast)
             new = ast.reduce
 
             break if ast.inspect == new.inspect

@@ -13,7 +13,7 @@ class Abstraction
         if new.key? @param.name
             new.delete(@param.name)
         end
-        return Abstraction.new(@param,@body.reduce(new))
+        Abstraction.new(@param,@body.reduce(new))
     end
 
     def inspect
@@ -36,6 +36,10 @@ class Application
     end
 
     def reduce(env={})
+        if @rhs.is_a? Epsilon
+            return @lhs.reduce(env)
+        end
+
         if @lhs.is_a? Abstraction
             new = env.clone
 
@@ -46,11 +50,7 @@ class Application
             return @lhs.body.reduce(new)
         end
 
-        if @rhs.is_a? Epsilon
-            return @lhs.reduce(env)
-        end
-
-        return Application.new(@lhs.reduce(env),@rhs.reduce(env))
+        Application.new(@lhs.reduce(env),@rhs.reduce(env))
     end
 
     def inspect
