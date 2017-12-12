@@ -14,14 +14,7 @@ class Abstraction
             new.delete(@param.name)
         end
 
-        puts "hi"
         if @body.is_a? Application
-            puts "in here"
-            puts "body"
-            p @body
-            puts "bodyfin"
-            p "bodyrhs #{@body.rhs.inspect}"
-            p "param #{@param.inspect}"
             if @body.rhs == @param
                 return @body.lhs.reduce(new)
             end
@@ -53,9 +46,7 @@ class Application
         if @lhs.is_a? Abstraction
             new = env.clone
 
-            if not new.has_value? @lhs.param
-                new[@lhs.param.name] = @rhs
-            end
+            new[@lhs.param.name] = @rhs
 
             return @lhs.body.reduce(new)
         end

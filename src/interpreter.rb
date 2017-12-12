@@ -11,6 +11,10 @@ module Interpreter
         ast = Parser.new(tokens).parse
         ast = removeEpsilon(ast)
 
+        # puts "===================================="
+        # p ast
+        # pp astToDict(ast)
+
         loop do
             # puts "===================================="
             # p ast
