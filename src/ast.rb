@@ -1,7 +1,7 @@
 
 class Abstraction
     attr_reader :param
-    attr_reader :body
+    attr_accessor :body
 
     def initialize(param,body)
         @param = param
@@ -13,6 +13,20 @@ class Abstraction
         if new.key? @param.name
             new.delete(@param.name)
         end
+
+        # puts "hi"
+        # if @body.is_a? Application
+        #     puts "in here"
+        #     puts "body"
+        #     p @body
+        #     puts "bodyfin"
+        #     p "bodyrhs #{@body.rhs}"
+        #     p "param #{@param}"
+        #     if @body.rhs == @param
+        #         return @body.lhs.reduce(new)
+        #     end
+        # end
+
         Abstraction.new(@param,@body.reduce(new))
     end
 
@@ -27,8 +41,8 @@ class Abstraction
 end
 
 class Application
-    attr_reader :lhs
-    attr_reader :rhs
+    attr_accessor :lhs
+    attr_accessor :rhs
 
     def initialize(lhs,rhs)
         @lhs = lhs
@@ -61,10 +75,6 @@ class Application
     end
 
     def ==(other)
-        if other.is_a? Atom
-            other = Application.new(other, Epsilon.new)
-        end
-
         return false if not other.is_a? Application
         @lhs == other.lhs and @rhs == other.rhs
     end
@@ -89,10 +99,6 @@ class Atom
     end
 
     def ==(other)
-        if other.is_a? Application and other.rhs.is_a? Epsilon
-            other = other.lhs
-        end
-
         return false if not other.is_a? Atom
         @name == other.name
     end
@@ -134,5 +140,24 @@ def astToDict(ast, ast_dict={})
     end
 
     ast_dict
+end
+
+# Walk AST, removing epsilons
+def removeEpsilon(ast)
+    if ast.is_a? Application and ast.rhs.is_a? Epsilon
+        ast = ast.lhs
+        ast = removeEpsilon(ast)
+    end
+
+    if ast.is_a? Application
+        ast.lhs = removeEpsilon(ast.lhs)
+        ast.rhs = removeEpsilon(ast.rhs)
+    end
+
+    if ast.is_a? Abstraction
+        ast.body = removeEpsilon(ast.body)
+    end
+
+    ast
 end
 

@@ -10,15 +10,25 @@ module Interpreter
         tokens = Lexer.new(expr).lex
         ast = Parser.new(tokens).parse
 
-        loop do
-            # puts "===================================="
-            # p ast
-            # pp astToDict(ast)
-            new = ast.reduce
+        puts "===================================="
+        p ast
+        pp astToDict(ast)
 
-            break if ast.inspect == new.inspect
-            ast = new
-        end
+        puts "AFTER"
+        ast = removeEpsilon(ast)
+        p ast
+        pp astToDict(ast)
+
+
+        # loop do
+        #     # puts "===================================="
+        #     # p ast
+        #     # pp astToDict(ast)
+        #     new = ast.reduce
+
+        #     break if ast.inspect == new.inspect
+        #     ast = new
+        # end
 
         return ast
     end
