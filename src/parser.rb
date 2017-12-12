@@ -37,18 +37,28 @@ class Parser
         return expr
     end
 
-    def parseApplication
+    def parseBounded
         if @tokens[@ind].is_a? AtomTok
-            lexpr = parseAtom
+            return parseAtom
         elsif @tokens[@ind].is_a? LambdaTok
             return parseAbstraction
         elsif @tokens[@ind].is_a? LParenTok
-            lexpr = parseParenthesizedExpression
+            return parseParenthesizedExpression
         end
 
-        rexpr = parseExpression
+        nil
+    end
 
-        Application.new(lexpr, rexpr)
+    def parseApplication
+        lexpr = parseBounded
+        loop do
+            rexpr = parseBounded
+            if not rexpr
+                return lexpr
+            else
+                lexpr = Application.new(lexpr, rexpr)
+            end
+        end
     end
 
     def parseAbstraction

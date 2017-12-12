@@ -1,2 +1,2 @@
-(λx.(λx.y x) (λx.z x)) x
+(λp.λa.λb.p a b) (λa.λb. a) a b
 

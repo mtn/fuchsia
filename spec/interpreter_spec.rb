@@ -30,7 +30,7 @@ describe Interpreter do
             end
         end
 
-        context "if-else combinator" do
+        context "if-else combinator (5 beta-reductions)" do
             it "evaluated to" do
                 expect(Interpreter.run("(λp.λa.λb.p a b) (λa.λb. a) a b").inspect)
                     .to eql("a")
