@@ -13,7 +13,7 @@ describe Interpreter do
         context "application combinator" do
             it "evaluated to" do
                 expect(Interpreter.run("((λy.λx.(y x)) (λx.x x)) y").inspect)
-                    .to eql("y y")
+                    .to eql("(y y)")
             end
         end
 
@@ -26,7 +26,7 @@ describe Interpreter do
         context "complex eta-reducable expression" do
             it "evaluated to" do
                 expect(Interpreter.run("(λx.(λx.y x) (λx.z x)) x").inspect)
-                    .to eql("y z")
+                    .to eql("(y z)")
             end
         end
 
@@ -40,13 +40,13 @@ describe Interpreter do
         context "alpha-beta-eta combination" do
             it "evaluated to" do
                 expect(Interpreter.run("(λz.z (λx. w x)) y").inspect)
-                    .to eql("y w")
+                    .to eql("(y w)")
             end
         end
 
         context "possible name collision" do
             it "evaluated to" do
-                expect(Interpreter.run("(λx.λx.(x x)) y w").inspect).to eql("w w")
+                expect(Interpreter.run("(λx.λx.(x x)) y w").inspect).to eql("(w w)")
             end
         end
 

@@ -53,7 +53,7 @@ To get rid of left recursion:
                    | (<atom>) <expression>
                    | (<abstraction>) <expression>
 
-    <atom>          := [a-z][a-zA-Z]*
+    <atom>         := [a-z][a-zA-Z]*
 
 
 Variable names can be arbitrarily long so long as they begin with a lowercase letter and otherwise only consist of alphabetic characters, so arbitrarily long expressions can be evaluated.
