@@ -17,9 +17,10 @@ end
 while buf = Readline.readline('>> ', true)
     begin
         p Interpreter.run(buf)
-    rescue ParseError
-        puts "#{e.message}"
     rescue => e
+        if p.is_a? ParseError
+            puts "#{e.message}"
+        end
         puts "Error: '#{e.message}'"
     end
 end
