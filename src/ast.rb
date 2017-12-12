@@ -91,14 +91,15 @@ def astToDict(ast, ast_dict={})
     if not ast_dict
         ast_dict = {}
     end
+
     if ast.is_a? Application
         ast_dict['type'] = "Application"
         ast_dict['lhs'] = astToDict(ast.lhs, ast_dict['lhs'])
-        ast_dict['rhs'] = astToDict(ast.lhs, ast_dict['lhs'])
+        ast_dict['rhs'] = astToDict(ast.rhs, ast_dict['rhs'])
     elsif ast.is_a? Abstraction
         ast_dict['type'] = "Abstraction"
-        ast_dict['param'] = astToDict(ast.param, ast_dict['lhs'])
-        ast_dict['body'] = astToDict(ast.body, ast_dict['lhs'])
+        ast_dict['param'] = astToDict(ast.param, ast_dict['param'])
+        ast_dict['body'] = astToDict(ast.body, ast_dict['body'])
     elsif ast.is_a? Atom
         ast_dict['type'] = "Atom"
         ast_dict['name'] = ast.name
