@@ -19,14 +19,12 @@ class Parser
         @tokens[@ind-1]
     end
 
-    def parseExpression(recursive=true)
+    def parseExpression
         if @tokens[@ind].is_a? EOFTok or @tokens[@ind].is_a? RParenTok
             return Epsilon.new
         end
 
-        if recursive
-            return parseApplication
-        end
+        parseApplication
     end
 
     def parseParenthesizedExpression
