@@ -16,15 +16,11 @@ class Lexer
     end
 
     def getTok
-        if not @input[@ind]
-            return nil
-        end
-
         while @input[@ind] and isspace(@input[@ind])
             advance
         end
 
-        if @ind == @input.length
+        if not @input[@ind]
             return nil
         end
 
