@@ -7,10 +7,6 @@ class Lexer
         @ind = 0
     end
 
-    def peek
-        @input[@ind]
-    end
-
     def advance
         @ind += 1
     end
