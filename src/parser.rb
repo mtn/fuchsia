@@ -7,15 +7,11 @@ class Parser
         @ind = 0
     end
 
-    def advance
-        @ind += 1
-    end
-
     def consume(type)
         raise UnexpectedTokenType.new(@tokens[@ind].class, type) \
             unless @tokens[@ind].is_a? type
 
-        advance
+        @ind += 1
         @tokens[@ind-1]
     end
 
@@ -63,9 +59,8 @@ class Parser
         consume(LambdaTok)
         param = parseAtom
         consume(DotTok)
-        abs = Abstraction.new(param, parseExpression)
 
-        return abs
+        Abstraction.new(param, parseExpression)
     end
 
     def parseAtom
