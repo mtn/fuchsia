@@ -1,4 +1,5 @@
 # fuchsia
+[![Build Status](https://travis-ci.org/mtn/fuchsia.png)](https://travis-ci.org/mtn/fuchsia)
 
 Fuchsia is an untyped lambda calculus interpreter. Expressions are evaluated according to normal order reduction ([outside-in](https://en.wikipedia.org/wiki/Beta_normal_form#Reduction_strategies)). The core has no dependencies outside the standard library, though tests are implemented with RSpec.
 
